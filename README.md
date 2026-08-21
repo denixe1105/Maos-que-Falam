@@ -1,2 +1,2 @@
 # Maos-que-Falam
-maos que falam es una aplicacion educativa que ayuda a aprender y reconocer ellenguaje de señas de manera facil, interactiva y divertida
+maos que falam es una aplicación educativa que ayuda a aprender y reconocer el lenguaje de señas de manera fácil, interactiva y divertida
