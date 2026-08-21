@@ -1,0 +1,106 @@
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: Arial, sans-serif;
+  background: #f4efe8;
+  color: #333;
+  text-align: center;
+}
+
+header {
+  background: #5b426b;
+  color: white;
+  padding: 25px 15px;
+  border-radius: 0 0 25px 25px;
+}
+
+header h1 {
+  margin: 0;
+  font-size: 32px;
+}
+
+header p {
+  margin: 8px 0 0;
+  font-size: 17px;
+}
+
+.contenedor {
+  max-width: 550px;
+  margin: 25px auto;
+  padding: 15px;
+}
+
+.tarjeta {
+  background: white;
+  padding: 25px;
+  border-radius: 25px;
+  box-shadow: 0 5px 18px rgba(0, 0, 0, 0.12);
+}
+
+#camara {
+  margin: 20px auto;
+}
+
+#camara canvas {
+  width: 100% !important;
+  max-width: 350px;
+  height: auto !important;
+  border-radius: 20px;
+  border: 4px solid #ddd;
+}
+
+#palabra {
+  font-size: 40px;
+  font-weight: bold;
+  color: #5b426b;
+  margin-top: 20px;
+}
+
+#confianza {
+  font-size: 17px;
+  margin: 10px;
+  color: #666;
+}
+
+button {
+  width: 90%;
+  max-width: 350px;
+  padding: 16px;
+  margin: 8px;
+  border: none;
+  border-radius: 15px;
+  background: #5b426b;
+  color: white;
+  font-size: 18px;
+  font-weight: bold;
+  cursor: pointer;
+}
+
+button:hover {
+  opacity: 0.9;
+}
+
+button:active {
+  transform: scale(0.97);
+}
+
+.boton-voz {
+  background: #806493;
+}
+
+.instrucciones {
+  margin-top: 20px;
+  color: #666;
+  font-size: 15px;
+  line-height: 1.8;
+}
+
+footer {
+  margin-top: 30px;
+  padding: 15px;
+  color: #777;
+  font-size: 13px;
+}
