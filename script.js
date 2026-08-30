@@ -1,151 +1,70 @@
-const URL =
-  "https://teachablemachine.withgoogle.com/models/fwpePaHB7/";
+const URL = "https://teachablemachine.withgoogle.com/models/HKeGS5c8k/";
 
-let modelo;
-let camara;
-let palabraActual = "Esperando...";
-
+let model;
+let webcam;
+let maxPredictions;
+let ultimaPrediccion = "";
 
 async function iniciar() {
-
-  document.getElementById("palabra").innerText =
-    "Cargando...";
+  document.getElementById("resultado").innerText = "Cargando modelo...";
 
   try {
+    const modelURL = URL + "model.json";
+    const metadataURL = URL + "metadata.json";
 
-    modelo = await tmImage.load(
-      URL + "model.json",
-      URL + "metadata.json"
-    );
+    model = await tmImage.load(modelURL, metadataURL);
+    maxPredictions = model.getTotalClasses();
 
-    camara = new tmImage.Webcam(300, 300, true);
+    webcam = new tmImage.Webcam(300, 300, true);
+    await webcam.setup();
+    await webcam.play();
 
-    await camara.setup();
+    document.getElementById("webcam-container").innerHTML = "";
+    document.getElementById("webcam-container").appendChild(webcam.canvas);
 
-    await camara.play();
-
-    document
-      .getElementById("camara")
-      .appendChild(camara.canvas);
-
-    document.getElementById("botonCamara").innerText =
-      "📷 CÁMARA ACTIVA";
-
-    reconocer();
+    window.requestAnimationFrame(ciclo);
 
   } catch (error) {
-
     console.error(error);
-
-    document.getElementById("palabra").innerText =
-      "No se pudo iniciar la cámara";
-
-    document.getElementById("confianza").innerText =
-      "Comprueba los permisos de cámara";
-
+    document.getElementById("resultado").innerText =
+      "No se pudo iniciar la cámara.";
   }
 }
 
+async function ciclo() {
+  webcam.update();
+  await predecir();
+  window.requestAnimationFrame(ciclo);
+}
 
-async function reconocer() {
+async function predecir() {
+  const predicciones = await model.predict(webcam.canvas);
 
-  camara.update();
+  let mejor = predicciones[0];
 
-  const predicciones =
-    await modelo.predict(camara.canvas);
-
-  let mejor =
-    predicciones[0];
-
-
-  for (
-    let i = 1;
-    i < predicciones.length;
-    i++
-  ) {
-
-    if (
-      predicciones[i].probability >
-      mejor.probability
-    ) {
-
-      mejor =
-        predicciones[i];
-
+  for (let i = 1; i < predicciones.length; i++) {
+    if (predicciones[i].probability > mejor.probability) {
+      mejor = predicciones[i];
     }
-
   }
 
+  const porcentaje = (mejor.probability * 100).toFixed(0);
 
-  const porcentaje =
-    mejor.probability * 100;
+  document.getElementById("resultado").innerText =
+    mejor.className + " — " + porcentaje + "%";
 
-
-  if (porcentaje >= 70) {
-
-    palabraActual =
-      mejor.className;
-
-    document
-      .getElementById("palabra")
-      .innerText =
-      palabraActual;
-
-    document
-      .getElementById("confianza")
-      .innerText =
-      "Confianza: " +
-      porcentaje.toFixed(1) +
-      "%";
-
-  } else {
-
-    palabraActual =
-      "No reconocida";
-
-    document
-      .getElementById("palabra")
-      .innerText =
-      "No reconocida";
-
-    document
-      .getElementById("confianza")
-      .innerText =
-      "Intenta nuevamente";
-
-  }
-
-
-  requestAnimationFrame(reconocer);
-
+  ultimaPrediccion = mejor.className;
 }
-
 
 function escuchar() {
-
-  if (
-    palabraActual === "Esperando..." ||
-    palabraActual === "No reconocida"
-  ) {
-
+  if (!ultimaPrediccion) {
+    alert("Primero coloca tu mano frente a la cámara.");
     return;
-
   }
 
+  const voz = new SpeechSynthesisUtterance(ultimaPrediccion);
+  voz.lang = "es-ES";
 
-  const voz =
-    new SpeechSynthesisUtterance(
-      palabraActual
-    );
-
-
-  voz.lang =
-    "es-ES";
-
-  voz.rate =
-    0.9;
-
-
+  speechSynthesis.cancel();
   speechSynthesis.speak(voz);
-
 }
