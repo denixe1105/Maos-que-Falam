@@ -1,68 +1,66 @@
-const URL = "https://teachablemachine.withgoogle.com/models/HKeGS5c8k/";
+<!DOCTYPE html>
+<html lang="es">
 
-let model;
-let webcam;
-let maxPredictions;
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-async function iniciar() {
-  try {
-    document.getElementById("resultado").innerText = "Cargando modelo...";
+  <title>Mãos que Falam</title>
 
-    const modelURL = URL + "model.json";
-    const metadataURL = URL + "metadata.json";
+  <link rel="stylesheet" href="style.css">
 
-    model = await tmImage.load(modelURL, metadataURL);
+  <!-- TensorFlow.js -->
+  <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs"></script>
 
-    maxPredictions = model.getTotalClasses();
+  <!-- Teachable Machine -->
+  <script src="https://cdn.jsdelivr.net/npm/@teachablemachine/image@0.8/dist/teachablemachine-image.min.js"></script>
+</head>
 
-    webcam = new tmImage.Webcam(300, 300, true);
-    await webcam.setup();
-    await webcam.play();
+<body>
 
-    document.getElementById("webcam-container").innerHTML = "";
-    document.getElementById("webcam-container").appendChild(webcam.canvas);
+  <header>
+    <h1>🤟 Mãos que Falam</h1>
+    <p>Aprendiendo a comunicarnos con las manos</p>
+  </header>
 
-    window.requestAnimationFrame(ciclo);
-  } catch (error) {
-    console.error(error);
-    document.getElementById("resultado").innerText =
-      "❌ No se pudo iniciar la cámara.";
-  }
-}
+  <main>
 
-async function ciclo() {
-  webcam.update();
+    <section class="tarjeta">
 
-  await predecir();
+      <h2>Reconocimiento de señas</h2>
 
-  window.requestAnimationFrame(ciclo);
-}
+      <div id="webcam-container">
+        <p>Coloca tu mano frente a la cámara</p>
+      </div>
 
-async function predecir() {
-  const predicciones = await model.predict(webcam.canvas);
+      <div id="resultado">
+        Esperando una seña...
+      </div>
 
-  let mejor = predicciones[0];
+      <button class="boton-camara" onclick="iniciar()">
+        📷 INICIAR CÁMARA
+      </button>
 
-  for (let i = 1; i < predicciones.length; i++) {
-    if (predicciones[i].probability > mejor.probability) {
-      mejor = predicciones[i];
-    }
-  }
+      <button class="boton-voz" onclick="escuchar()">
+        🔊 ESCUCHAR
+      </button>
 
-  const porcentaje = (mejor.probability * 100).toFixed(0);
+      <div class="instrucciones">
+        🔤 ABECEDARIO
+        <br><br>
+        🗣️ PALABRAS
+      </div>
 
-  document.getElementById("resultado").innerText =
-    mejor.className + " — " + porcentaje + "%";
-}
+    </section>
 
-function escuchar() {
-  const texto = document.getElementById("resultado").innerText;
+  </main>
 
-  if ("speechSynthesis" in window) {
-    const voz = new SpeechSynthesisUtterance(texto);
-    voz.lang = "es-ES";
-    speechSynthesis.speak(voz);
-  } else {
-    alert("Tu navegador no permite lectura por voz.");
-  }
-}
+  <footer>
+    Proyecto educativo — Mãos que Falam
+  </footer>
+
+  <script src="script.js"></script>
+
+</body>
+
+</html>
