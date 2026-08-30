@@ -9,43 +9,46 @@
 
   <link rel="stylesheet" href="style.css">
 
+  <!-- TensorFlow.js -->
   <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@latest/dist/tf.min.js"></script>
+
+  <!-- Teachable Machine -->
   <script src="https://cdn.jsdelivr.net/npm/@teachablemachine/image@latest/dist/teachablemachine-image.min.js"></script>
 </head>
 
 <body>
 
   <header>
-    <h1>🤟 MÃOS QUE FALAM</h1>
-    <p>Traductor de lenguaje de señas</p>
+    <h1>🤟 Mãos que Falam</h1>
+    <p>Aprendiendo a comunicarnos con las manos</p>
   </header>
 
-  <main class="contenedor">
+  <main>
 
     <section class="tarjeta">
 
-      <button id="botonCamara" onclick="iniciar()">
+      <h2>Reconocimiento de señas</h2>
+
+      <div id="webcam-container">
+        <p>Coloca tu mano frente a la cámara</p>
+      </div>
+
+      <div id="resultado">
+        Esperando una seña...
+      </div>
+
+      <button class="boton-camara" onclick="iniciar()">
         📷 INICIAR CÁMARA
       </button>
-
-      <div id="camara"></div>
-
-      <div id="palabra">
-        Esperando...
-      </div>
-
-      <div id="confianza">
-        Coloca tu mano frente a la cámara
-      </div>
 
       <button class="boton-voz" onclick="escuchar()">
         🔊 ESCUCHAR
       </button>
 
       <div class="instrucciones">
-        👋 HOLA &nbsp;&nbsp;
-        🙏 PERDÓN &nbsp;&nbsp;
-        🤟 TU NOMBRE
+        🔤 ABECEDARIO
+        <br><br>
+        🗣️ PALABRAS
       </div>
 
     </section>
@@ -59,4 +62,5 @@
   <script src="script.js"></script>
 
 </body>
+
 </html>
