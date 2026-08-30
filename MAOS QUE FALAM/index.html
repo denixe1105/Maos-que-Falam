@@ -2,16 +2,43 @@
 <html lang="es">
 
 <head>
+  <!DOCTYPE html>
+<html lang="es">
+<head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-  <title>Mãos que Falam</title>
+  <title>Manos que hablan</title>
 
   <link rel="stylesheet" href="style.css">
 
-  <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs@latest/dist/tf.min.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/@teachablemachine/image@latest/dist/teachablemachine-image.min.js"></script>
+  <!-- TensorFlow.js -->
+  <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs"></script>
+
+  <!-- Teachable Machine -->
+  <script src="https://cdn.jsdelivr.net/npm/@teachablemachine/image@0.8/dist/teachablemachine-image.min.js"></script>
 </head>
+
+<body>
+
+  <div class="contenedor">
+    <h1>🤟 Manos que hablan</h1>
+
+    <p>Coloca tu mano frente a la cámara</p>
+
+    <button onclick="iniciar()">Iniciar cámara</button>
+
+    <div id="webcam-container"></div>
+
+    <h2 id="resultado">Esperando...</h2>
+
+    <div id="probabilidades"></div>
+  </div>
+
+  <script src="script.js"></script>
+
+</body>
+</html>
 
 <body>
 
