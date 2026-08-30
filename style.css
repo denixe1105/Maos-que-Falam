@@ -1,106 +1,105 @@
 * {
   box-sizing: border-box;
+  margin: 0;
+  padding: 0;
 }
 
 body {
-  margin: 0;
   font-family: Arial, sans-serif;
-  background: #f4efe8;
+  background: #f5efe6;
   color: #333;
   text-align: center;
+  min-height: 100vh;
 }
 
 header {
-  background: #5b426b;
+  background: #8fa89a;
   color: white;
   padding: 25px 15px;
-  border-radius: 0 0 25px 25px;
 }
 
 header h1 {
-  margin: 0;
   font-size: 32px;
+  margin-bottom: 8px;
 }
 
 header p {
-  margin: 8px 0 0;
   font-size: 17px;
 }
 
-.contenedor {
-  max-width: 550px;
-  margin: 25px auto;
-  padding: 15px;
+main {
+  padding: 30px 15px;
 }
 
 .tarjeta {
   background: white;
-  padding: 25px;
-  border-radius: 25px;
-  box-shadow: 0 5px 18px rgba(0, 0, 0, 0.12);
-}
-
-#camara {
-  margin: 20px auto;
-}
-
-#camara canvas {
-  width: 100% !important;
-  max-width: 350px;
-  height: auto !important;
+  max-width: 600px;
+  margin: auto;
+  padding: 30px 20px;
   border-radius: 20px;
-  border: 4px solid #ddd;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.12);
 }
 
-#palabra {
-  font-size: 40px;
+.tarjeta h2 {
+  margin-bottom: 20px;
+}
+
+#webcam-container {
+  width: 300px;
+  height: 300px;
+  margin: 20px auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #eee;
+  border-radius: 15px;
+  overflow: hidden;
+}
+
+#webcam-container canvas {
+  width: 300px !important;
+  height: 300px !important;
+}
+
+#resultado {
+  font-size: 26px;
   font-weight: bold;
-  color: #5b426b;
-  margin-top: 20px;
-}
-
-#confianza {
-  font-size: 17px;
-  margin: 10px;
-  color: #666;
+  margin: 20px 0;
+  min-height: 35px;
 }
 
 button {
-  width: 90%;
-  max-width: 350px;
-  padding: 16px;
-  margin: 8px;
   border: none;
-  border-radius: 15px;
-  background: #5b426b;
-  color: white;
-  font-size: 18px;
+  padding: 14px 22px;
+  margin: 8px;
+  border-radius: 12px;
+  font-size: 16px;
   font-weight: bold;
   cursor: pointer;
 }
 
-button:hover {
-  opacity: 0.9;
-}
-
-button:active {
-  transform: scale(0.97);
+.boton-camara {
+  background: #8fa89a;
+  color: white;
 }
 
 .boton-voz {
-  background: #806493;
+  background: #d6a77a;
+  color: white;
 }
 
 .instrucciones {
-  margin-top: 20px;
-  color: #666;
-  font-size: 15px;
-  line-height: 1.8;
+  margin-top: 25px;
+  padding: 15px;
+  background: #f5efe6;
+  border-radius: 12px;
+  font-size: 18px;
+  line-height: 1.5;
 }
 
 footer {
-  margin-top: 30px;
-  padding: 15px;
-  color: #777;
-  font-size: 13px;
+  margin-top: 20px;
+  padding: 20px;
+  color: #666;
+  font-size: 14px;
 }
