@@ -1,151 +1,100 @@
-const URL =
-  "https://teachablemachine.withgoogle.com/models/fwpePaHB7/";
+// ================================
+// MAOS QUE FALAM
+// Reconocimiento de lenguaje de señas
+// ================================
 
-let modelo;
-let camara;
-let palabraActual = "Esperando...";
+// URL de nuestro modelo de Teachable Machine
+const URL = "https://teachablemachine.withgoogle.com/models/HKeGS5c8k/";
 
+let model;
+let webcam;
+let maxPredictions;
 
-async function iniciar() {
+// Iniciar la aplicación
+async function init() {
 
-  document.getElementById("palabra").innerText =
-    "Cargando...";
+    const modelURL = URL + "model.json";
+    const metadataURL = URL + "metadata.json";
 
-  try {
+    // Cargar el modelo
+    model = await tmImage.load(modelURL, metadataURL);
 
-    modelo = await tmImage.load(
-      URL + "model.json",
-      URL + "metadata.json"
-    );
+    // Número de clases que tiene nuestro modelo
+    maxPredictions = model.getTotalClasses();
 
-    camara = new tmImage.Webcam(300, 300, true);
+    // Activar cámara
+    const flip = true;
 
-    await camara.setup();
+    webcam = new tmImage.Webcam(300, 300, flip);
 
-    await camara.play();
+    await webcam.setup();
+    await webcam.play();
 
-    document
-      .getElementById("camara")
-      .appendChild(camara.canvas);
+    // Mostrar cámara
+    document.getElementById("webcam-container").appendChild(webcam.canvas);
 
-    document.getElementById("botonCamara").innerText =
-      "📷 CÁMARA ACTIVA";
+    // Crear espacio para mostrar resultado
+    const labelContainer = document.getElementById("label-container");
 
-    reconocer();
-
-  } catch (error) {
-
-    console.error(error);
-
-    document.getElementById("palabra").innerText =
-      "No se pudo iniciar la cámara";
-
-    document.getElementById("confianza").innerText =
-      "Comprueba los permisos de cámara";
-
-  }
-}
-
-
-async function reconocer() {
-
-  camara.update();
-
-  const predicciones =
-    await modelo.predict(camara.canvas);
-
-  let mejor =
-    predicciones[0];
-
-
-  for (
-    let i = 1;
-    i < predicciones.length;
-    i++
-  ) {
-
-    if (
-      predicciones[i].probability >
-      mejor.probability
-    ) {
-
-      mejor =
-        predicciones[i];
-
+    for (let i = 0; i < maxPredictions; i++) {
+        labelContainer.appendChild(document.createElement("div"));
     }
 
-  }
-
-
-  const porcentaje =
-    mejor.probability * 100;
-
-
-  if (porcentaje >= 70) {
-
-    palabraActual =
-      mejor.className;
-
-    document
-      .getElementById("palabra")
-      .innerText =
-      palabraActual;
-
-    document
-      .getElementById("confianza")
-      .innerText =
-      "Confianza: " +
-      porcentaje.toFixed(1) +
-      "%";
-
-  } else {
-
-    palabraActual =
-      "No reconocida";
-
-    document
-      .getElementById("palabra")
-      .innerText =
-      "No reconocida";
-
-    document
-      .getElementById("confianza")
-      .innerText =
-      "Intenta nuevamente";
-
-  }
-
-
-  requestAnimationFrame(reconocer);
-
+    // Comenzar reconocimiento
+    window.requestAnimationFrame(loop);
 }
 
 
-function escuchar() {
+// Bucle de reconocimiento
+async function loop() {
 
-  if (
-    palabraActual === "Esperando..." ||
-    palabraActual === "No reconocida"
-  ) {
+    webcam.update();
 
-    return;
+    await predict();
 
-  }
-
-
-  const voz =
-    new SpeechSynthesisUtterance(
-      palabraActual
-    );
-
-
-  voz.lang =
-    "es-ES";
-
-  voz.rate =
-    0.9;
-
-
-  speechSynthesis.speak(voz);
-
+    window.requestAnimationFrame(loop);
 }
+
+
+// Reconocer el gesto
+async function predict() {
+
+    const prediction = await model.predict(webcam.canvas);
+
+    let mayor = 0;
+    let resultado = "";
+
+    for (let i = 0; i < maxPredictions; i++) {
+
+        const porcentaje =
+            prediction[i].probability * 100;
+
+        // Mostrar cada resultado
+        document.getElementById("label-container")
+            .childNodes[i].innerHTML =
+            prediction[i].className +
+            ": " +
+            porcentaje.toFixed(1) +
+            "%";
+
+        // Buscar la predicción más alta
+        if (prediction[i].probability > mayor) {
+
+            mayor = prediction[i].probability;
+            resultado = prediction[i].className;
+        }
+    }
+
+    // Mostrar el gesto reconocido
+    document.getElementById("resultado").innerHTML =
+        resultado;
+}
+    
+
+  
+
+      
+
+    
+
+   
